@@ -1,0 +1,25 @@
+<% provide(:title, "#{@post.name}") %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <span class="picture">
+        <%= link_to((image_tag @post.picture.thumb400.url), post_path(@post.id), class: 'post-picture') if @post.picture.url.present? %>
+      </span>
+      <%= render 'users/favorite_form' %> 
+    </div>
+    <div class="col-md-8">
+      <h2 class="post-name"><%= @post.name %></h2>
+      <div class="change-post">
+        <% if current_user == @post.user %>
+          <%= link_to "編集", edit_post_path(@post), class: 'edit-post' %>　
+        <% end %>
+        <% if current_user.admin? || (current_user == @post.user) %>
+          <%= link_to "削除", post_path(@post), method: :delete, class: 'delete-post',
+                                        data: { confirm: "本当に削除しますか？" } %>
+        <% end %>
+      </div>
+      <h4><%= @post.description %></h4>
+      <h4 class="post-reference">参考URL(HPまたはMAP)：<%= link_to "#{@post.reference}", @post.reference, target: "_blank" %></h4>
+    </div>
+  </div>
+</div>
